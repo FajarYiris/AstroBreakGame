@@ -6,21 +6,34 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Camera mainCamera;
+    float spawnRate = 5f;
+    float rateChanger = 0.8f;
+
     void Start()
     {
         SpawnEnemyOutsideCameraView();
+        InvokeRepeating(nameof(newWave), 0.1f, 10f);
+        
     }
     void Update()
     {
+        // CHANGE THIS!! THIS IS ONLY FOR DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
         if(Input.GetKeyDown(KeyCode.F))
         {
             SpawnEnemyOutsideCameraView();
         }
     }
+    public void newWave()
+    {
+        spawnRate *= rateChanger;
+        CancelInvoke("SpawnEnemyOutsideCameraView");
+        InvokeRepeating(nameof(SpawnEnemyOutsideCameraView), 0.1f,spawnRate);
+    }
     public void SpawnEnemyOutsideCameraView()
     {
         Vector2 spawnPosition = CalculateRandomSpawnPositionOutsideCameraView();
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        enemyPrefab.GetComponent<AsteroidScript>().initializeAsteroid();
     }
     private Vector2 CalculateRandomSpawnPositionOutsideCameraView()
     {
@@ -50,9 +63,11 @@ public class Spawner : MonoBehaviour
             }
         }
         
-        Debug.Log($"this is isOpposite {isOpposite}");
-        //  = cameraHeight + mainCamera.transform.position.y;
-        // float randomY = Random.Range(mainCamera.transform.position.y + cameraHeight, mainCamera.transform.position.y - cameraHeight);
+        // Debug.Log($"this is isOpposite {isOpposite}");
         return new Vector2(randomX, randomY);
     }
+    // private IEnumerator delay()
+    // {
+    //     return new WaitForSeconds(spawnRate);
+    // }
 }
