@@ -61,7 +61,7 @@ public class PlayerScript : MonoBehaviour
         {
             rb.velocity = new Vector2(xvel, yvel);
         }
-        Debug.Log($"this is velocity {rb.velocity}");
+        // Debug.Log($"this is velocity {rb.velocity}");
     }
 
     void LookAtCursor(Vector2 direction)
