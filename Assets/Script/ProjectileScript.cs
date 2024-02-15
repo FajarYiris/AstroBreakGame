@@ -6,6 +6,7 @@ using UnityEngine;
 public class ProjectileScript : MonoBehaviour
 {
     public float speed;
+    private float time = 0f;
     private Vector2 Target;
     Collider2D _collider;
     Rigidbody2D _rb2;
@@ -14,6 +15,15 @@ public class ProjectileScript : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _rb2 = GetComponent<Rigidbody2D>();
         _rb2.AddForce(Target * speed, ForceMode2D.Impulse);
+    }
+
+    void Update()
+    {
+        time += Time.deltaTime;
+        if(time >= 5f)
+        {
+            Destroy(gameObject);
+        }
     }
     public void SetTarget(Vector2 direction, float _speed)
     {

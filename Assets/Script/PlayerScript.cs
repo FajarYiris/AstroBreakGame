@@ -7,7 +7,8 @@ public class PlayerScript : MonoBehaviour
 {
     float horizontal;
     float vertical;
-    float speed = 10;
+    float speed = 10f;
+    const float MAX_SPEED = 10f;
     Rigidbody2D rb;
     public GameObject ProjectilePrefab;
     public Transform ShootFrom;
@@ -29,6 +30,38 @@ public class PlayerScript : MonoBehaviour
     void Move(Vector2 vector2)
     {
         rb.AddForce(vector2, ForceMode2D.Force);
+        float xvel = rb.velocity.x;
+        float yvel = rb.velocity.y;
+        bool iscapped = false;
+        if (xvel > MAX_SPEED || xvel < -MAX_SPEED)
+        {
+            if (xvel > MAX_SPEED)
+            {
+                xvel = MAX_SPEED;
+            }
+            else
+            {
+                xvel = -MAX_SPEED;
+            }
+            iscapped = true;
+        }
+        if (yvel > MAX_SPEED || yvel < -MAX_SPEED)
+        {
+            if (yvel > MAX_SPEED)
+            {
+                yvel = MAX_SPEED;
+            }
+            else
+            {
+                yvel = -MAX_SPEED;
+            }
+            iscapped = true;
+        }
+        if (iscapped)
+        {
+            rb.velocity = new Vector2(xvel, yvel);
+        }
+        Debug.Log($"this is velocity {rb.velocity}");
     }
 
     void LookAtCursor(Vector2 direction)
